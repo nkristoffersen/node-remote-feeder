@@ -1,0 +1,104 @@
+<!doctype html>
+<html ng-app="piApp">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+    <style>
+    body{
+      -webkit-user-select: none;  /* Chrome all / Safari all */
+      -moz-user-select: none;     /* Firefox all */
+      -ms-user-select: none;      /* IE 10+ */
+      user-select: none;
+    }
+    </style>
+  </head>
+  <body>
+    <div ng-controller="PIController as pi" >
+
+
+      <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools">
+          <h2 class="md-flex">Feed the cats</h2>
+        </div>
+      </md-toolbar>
+
+      <md-content flex layout-padding>
+        <section layout="column" layout-md="column" layout-align="top center">
+          video
+        </section>
+        <div layout="row" layout-align="center center">
+          <section layout="column" layout-md="column" layout-align="top center">
+            <md-slider-container>
+              <span>Sec</span>
+              <md-slider class="md-primary" flex min="5" max="60" ng-model="pi.seconds" aria-label="seconds" id="seconds-slider">
+              </md-slider>
+              <md-input-container>
+                <input flex type="number" ng-model="pi.seconds" aria-label="seconds" aria-controls="seconds-slider">
+              </md-input-container>
+            </md-slider-container>
+            <md-input-container flex="50">
+              <label>Password</label>
+              <input required name="password" ng-model="pi.password">
+            </md-input-container>
+          </section>
+        </div>
+        <div layout="row" layout-align="center center">
+          <section layout="row" layout-md="row" layout-align="center center">
+            <md-button ng-disabled="pi.buttonDisabled" class="md-raised md-primary" ng-click="pi.sendCommand('/motor',true,pi.seconds,pi.password)">{{pi.buttonText}}</md-button>
+          </section>
+          <md-progress-circular ng-if="pi.buttonDisabled" class="md-hue-2" md-diameter="20px"></md-progress-circular>
+        </div>
+
+      </md-content>
+  </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    <script>
+
+    angular.module('piApp',  ['ngMaterial'])
+      .controller('PIController', function($http) {
+        var pi = this;
+        pi.seconds = 10;
+        pi.buttonText = 'Feed Cats';
+        pi.buttonDisabled = false;
+        pi.sendCommand = function(url, state, seconds, password){
+          pi.buttonText = 'Feeding...';
+          pi.buttonDisabled = true;
+          var request = {
+           method: 'POST',
+           url: url,
+           headers: {
+            //  'Content-Type': application/json
+           },
+           data: {
+             action:url,
+             state:state,
+             seconds:seconds,
+             password:password
+           }
+          };
+
+        $http(request).then(function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+              pi.buttonText = 'Feed Cats';
+              pi.buttonDisabled = false;
+            console.log('success:',response.data);
+          }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            console.log('error:\n',response);
+            pi.buttonText = 'Try Again';
+            pi.buttonDisabled = false;
+
+          });
+        };
+      });
+
+    </script>
+  </body>
+</html>
