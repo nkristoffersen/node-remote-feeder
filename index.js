@@ -11,8 +11,8 @@ const secrets = JSON.parse(fs.readFileSync('secrets.json', 'utf8'));
 console.log(secrets);
 
 // GPIO pin of the motor
-const configPin = 7;
-wpi.setup('wpi');
+const configPin = 19;
+wpi.setup('gpio');
 wpi.pinMode(configPin, wpi.OUTPUT);
 
 
