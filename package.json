@@ -11,6 +11,8 @@
   "dependencies": {
     "body-parser": "^1.16.0",
     "express": "^4.14.1",
+    "node-raspistill": "0.0.9",
+    "raspberry-pi-mjpeg-server": "0.0.8",
     "wiring-pi": "^2.2.1"
   }
 }

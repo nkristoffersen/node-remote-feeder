@@ -24,7 +24,7 @@
 
       <md-content flex layout-padding>
         <section layout="column" layout-md="column" layout-align="top center">
-          video
+          <img src="http://192.168.1.17:8080/image.jpg">
         </section>
         <div layout="row" layout-align="center center">
           <section layout="column" layout-md="column" layout-align="top center">
@@ -59,8 +59,8 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
     <script>
 
-    angular.module('piApp',  ['ngMaterial'])
-      .controller('PIController', function($http) {
+    var app = angular.module('piApp',  ['ngMaterial'])
+      app.controller('PIController', function($http) {
         var pi = this;
         pi.seconds = 10;
         pi.buttonText = 'Feed Cats';
@@ -68,7 +68,7 @@
         pi.sendCommand = function(url, state, seconds, password){
           pi.buttonText = 'Feeding...';
           pi.buttonDisabled = true;
-          var request = {
+          var feedCat = {
            method: 'POST',
            url: url,
            headers: {
@@ -82,7 +82,7 @@
            }
           };
 
-        $http(request).then(function successCallback(response) {
+        $http(feedCat).then(function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
               pi.buttonText = 'Feed Cats';

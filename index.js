@@ -15,7 +15,6 @@ const configPin = 19;
 wpi.setup('gpio');
 wpi.pinMode(configPin, wpi.OUTPUT);
 
-
 app.get('/', function (req, res) {
 	res.status(200).sendFile(path.join(__dirname, '/static/index.html'));
 });
